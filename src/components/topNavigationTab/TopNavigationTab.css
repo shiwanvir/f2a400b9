@@ -1,0 +1,5 @@
+.tab-text {
+    text-transform: none !important; 
+    display: flex;     
+    align-items: center;  
+  }
