@@ -7,7 +7,6 @@ const App = () => {
   return (
     <div className='container'>
       <TopNavigationTab/>
-      <div className="container-view">Some activities should be here</div>
       <BottomNavigationBar/>
     </div>
   );
