@@ -8,11 +8,17 @@
     background-color: white; 
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     display: flex; 
-    justify-content: flex-start; 
     align-items: center; 
-    padding: 0 10px; 
+    padding: 0 5px; 
+    justify-content: space-around !important;
   }
 
   .bottom-nav .Mui-selected {
     color: #2AC420 !important;
+}
+
+
+.center-icon {
+  border-radius: 50%; 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
 }
