@@ -6,9 +6,9 @@ import Box from '@mui/material/Box';
 import Logo from '../../Logo.jsx';
 import './TopNavigationTab.css';
 import TabPanel from '../tabPanel/TabPanel.jsx';
-import ListOfCalls from '../calls/listOfCalls/ListOfCalls.jsx';
-import DetailsOfCalls from '../calls/detailsOfcalls/DetailsOfCalles.jsx';
+import AllCallList from '../calls/allCallList/AllCallList.jsx';
 import ArchivedCalls from '../calls/archivedCalls/ArchivedCalls.jsx';
+import Inbox from '../calls/inbox/Inbox.jsx';
 
 const TopNavigationTab = () => {
     const [value, setValue] = React.useState(0);
@@ -48,10 +48,10 @@ const TopNavigationTab = () => {
         </Box>
         <Box>
             <TabPanel value={value} index={0}>
-                <ListOfCalls />
+                <Inbox />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <DetailsOfCalls />
+                <AllCallList />
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <ArchivedCalls />
