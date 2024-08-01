@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Call from '../call/Call.jsx';
 import CustomButton from '../../customButton/CustomButton.jsx';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+
 import { CallContext } from '../../../contexts/CallContext.jsx';
 
 const AllCallList = () => {
@@ -16,7 +17,9 @@ const { calls, loading, updateCall } = useContext(CallContext);
   const unarchivedCalls = calls.filter(call => !call.is_archived);    
   return (
     <Box>
-    <CustomButton buttonName="Archive all calls" onClick={handleButtonClickArchiveAll} icon={<ArchiveOutlinedIcon />} />    
+    <CustomButton buttonName="Archive all calls" onClick={handleButtonClickArchiveAll} icon={<ArchiveOutlinedIcon />}
+     disabled={unarchivedCalls.length === 0} 
+    />    
     {unarchivedCalls.map(call => (
       <Box key={call.id} mb={1}>
            <Typography variant="h6" align="center" gutterBottom>

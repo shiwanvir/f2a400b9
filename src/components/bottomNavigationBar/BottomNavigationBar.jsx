@@ -1,12 +1,13 @@
 import React, { useState,useContext } from 'react';
-import { BottomNavigation, BottomNavigationAction,ThemeProvider,createTheme,Badge } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction,ThemeProvider,createTheme,Badge,Box } from '@mui/material';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import DialpadOutlinedIcon from '@mui/icons-material/DialpadOutlined';
+import DialpadOutlinedIcon from '@mui/icons-material/AppsSharp';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ModeStandbyOutlinedIcon from '@mui/icons-material/ModeStandbyOutlined';
 import './BottomNavigationBar.css';
 import { CallContext } from '../../contexts/CallContext.jsx';
+
 // set a global theme that overrides the default styles.
 const theme = createTheme({
   components: {
@@ -50,7 +51,22 @@ export const BottomNavigationBar = () => {
           </Badge>}
         />
         <BottomNavigationAction  icon={<PermIdentityOutlinedIcon sx={{ fontSize: '70px' }} />}/>
-        <BottomNavigationAction  icon={<DialpadOutlinedIcon  sx={{ fontSize: '70px'}} />} />
+        <BottomNavigationAction  
+        icon={
+          <Box
+            sx={{
+              backgroundColor: '#2AC420',
+              borderRadius: '70%', // Rounded shape
+              padding: '1em', 
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom:'3em'
+            }}
+          >
+            <DialpadOutlinedIcon sx={{ fontSize: '70px', color: 'white' }} />
+          </Box>
+        }
+         />
         <BottomNavigationAction  icon={<SettingsOutlinedIcon sx={{ fontSize: '70px' }} />} />
         <BottomNavigationAction  icon={<ModeStandbyOutlinedIcon  sx={{ fontSize: '70px' }}/>} />
       </BottomNavigation>
