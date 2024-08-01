@@ -4,8 +4,8 @@ The goal of this test is to make you code a small ReactJS app. We have prepared 
 
 The app should have the following features:
 - **Activity Feed** - simple list of calls
-- **Activity Detail** - detail of a call (Please double tab on call list item to see the details)
-- **Archive** - the final user should be able to archive (and unarchive) a call. Archived calls will no longer be displayed on the Activity Feed and should have a separate Archived Tab.(Please swip left to archive a call)
+- **Activity Detail** - detail of a call (Please double tap on a call list item to see the details)
+- **Archive** - the final user should be able to archive (and unarchive) a call. Archived calls will no longer be displayed on the Activity Feed and should have a separate Archived Tab.(Please swipe left to archive a call)
 - A button to archive all calls in the activity feed
 - A button to unarchive all calls in the archived calls tab
 
