@@ -7,13 +7,18 @@ import TopNavigationTab from './components/topNavigationTab/TopNavigationTab.jsx
 const App = () => {
   return (
     <CallProvider>
-    <div className='container'>
-      <TopNavigationTab/>
-      <BottomNavigationBar/>
-    </div>
+      <div style={{ display: 'grid', height: '100vh' }}>
+        <div style={{ overflowY: 'auto', gridRow: 1 }}>
+          <TopNavigationTab />
+        </div>
+        <div style={{ gridRow: 9, marginBottom: '10px' }}>
+          <BottomNavigationBar />
+        </div>
+      </div>
     </CallProvider>
   );
 };
+
 
 ReactDOM.render(<App/>, document.getElementById('app'));
 

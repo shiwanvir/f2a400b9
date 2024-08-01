@@ -1,8 +1,8 @@
 import React from 'react'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import AppsOutlinedIcon from '@mui/icons-material/AppsOutlined';
 import Box from '@mui/material/Box';
+import AppsOutlinedIcon from '@mui/icons-material/AppsOutlined';
 import Logo from '../../Logo.jsx';
 import './TopNavigationTab.css';
 import TabPanel from '../tabPanel/TabPanel.jsx';
@@ -40,8 +40,8 @@ const TopNavigationTab = () => {
                         },
                     }}
                 >
-                    <Tab label="Inbox" className="tab-text" />
-                    <Tab label={capitalizeFirstLetter("All calls")} className="tab-text" />
+                    <Tab label="Inbox" className="tab-text" sx={{ textTransform: 'none' }}/>
+                    <Tab label={capitalizeFirstLetter("All calls")} className="tab-text" sx={{ textTransform: 'none' }} />
                     <Tab icon={<AppsOutlinedIcon />} iconPosition="end" />
                 </Tabs>
             </Box>

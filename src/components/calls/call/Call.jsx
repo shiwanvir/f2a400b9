@@ -10,61 +10,15 @@ import VoicemailOutlinedIcon from '@mui/icons-material/VoicemailOutlined';
 import PhoneCallbackOutlinedIcon from '@mui/icons-material/PhoneCallbackOutlined';
 import { useSwipeable } from 'react-swipeable';
 import { CallContext } from '../../../contexts/CallContext.jsx';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
+import CallDetailsModal from '../callDetailsModal/CallDetailsModal.jsx';
 
 
-const CallDetailsModal = ({ open, onClose, callDetails }) => (
-  <Modal open={open} onClose={onClose} aria-labelledby="modal-title" aria-describedby="modal-description">
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh', // Full viewport height to center vertically
-        overflow: 'auto',
-        padding: 2,
-      }}
-    >
-      <Box
-        sx={{
-          width: '80%', // Adjust width as needed
-          maxWidth: 600, // Optional: limit maximum width
-          padding: 2,
-          backgroundColor: 'white',
-          borderRadius: 1,
-          boxShadow: 24, // Optional: add shadow for better visibility
-          textAlign: 'center', // Center text horizontally
-        }}
-      >
-        <Typography id="modal-title" variant="h6" gutterBottom>
-          Call Details
-        </Typography>
-        <Typography id="modal-description" variant="body1" gutterBottom>
-          {`Caller: ${callDetails.callerNameOrNumber}`}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          {`Time: ${callDetails.time}`}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          {`Description: ${callDetails.description}`}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          {`Direction: ${callDetails.direction}`}
-        </Typography>
-        <Button onClick={onClose} sx={{ marginTop: 2 }}>Close</Button>
-      </Box>
-    </Box>
-  </Modal>
-);
-
-
-const Call = ({ callId, callerNameOrNumber, time, description, direction, icon, onClick, count, call_type, is_archived }) => {
+const Call = ({ callId, callerNameOrNumber, time, description, direction, count, call_type, is_archived, groupedCallIds }) => {
   const [isSwiped, setIsSwiped] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const [lastClickTime, setLastClickTime] = useState(0);
   const { updateCall } = useContext(CallContext);
+  const [loading, setLoading] = useState(false);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => setIsSwiped(true),
@@ -73,16 +27,24 @@ const Call = ({ callId, callerNameOrNumber, time, description, direction, icon, 
     trackMouse: true,
   });
 
-  const handleArchive = (e, is_archived) => {
-    // Ensure e is defined and stopPropagation is available
+  const handleArchive = async (e, is_archived) => {
     if (e && typeof e.stopPropagation === 'function') {
       e.stopPropagation();
     }
-    console.log("call ID:", is_archived); // Log callId
-    if (callId) {
-      updateCall(callId, !is_archived);
-    } else {
-      console.error('callId is undefined');
+
+    setLoading(true);
+
+    try {
+      if (groupedCallIds) {
+        // Await all update calls for grouped calls
+        await Promise.all(groupedCallIds.map(id => updateCall(id, !is_archived)));
+      } else {
+        await updateCall(callId, !is_archived);
+      }
+    } catch (error) {
+      console.error('Error updating call:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -115,7 +77,7 @@ const Call = ({ callId, callerNameOrNumber, time, description, direction, icon, 
           display: 'flex',
           alignItems: 'center',
         }}
-      // onClick={handleDoubleClick}
+
       >
         <CardContent sx={{ flex: '1 1 auto' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -155,6 +117,7 @@ const Call = ({ callId, callerNameOrNumber, time, description, direction, icon, 
       </Card>
       {isSwiped && (
         <Box
+
           sx={{
             position: 'absolute',
             top: 0,
@@ -162,7 +125,7 @@ const Call = ({ callId, callerNameOrNumber, time, description, direction, icon, 
             right: 0,
             width: '100px',
             height: '150px',
-            backgroundColor: '#87CEEB', // Red color for delete action
+            backgroundColor: '#87CEEB',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -176,6 +139,7 @@ const Call = ({ callId, callerNameOrNumber, time, description, direction, icon, 
           <Typography variant="button" sx={{ textTransform: 'none' }}>{is_archived ? 'Unarchive' : 'Archive'}</Typography>
         </Box>
       )}
+     
       <CallDetailsModal
         open={detailsOpen}
         onClose={() => setDetailsOpen(false)}

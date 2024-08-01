@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 10px; /* Adjust padding as needed */
+  padding: 10px;
 }
 
   .bottom-nav .Mui-selected {
@@ -23,7 +23,6 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
-/* Responsive adjustments (example) */
 @media (max-width: 768px) {
   .bottom-nav {
     padding: 8px;
