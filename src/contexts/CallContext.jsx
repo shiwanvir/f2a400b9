@@ -54,47 +54,25 @@ export const CallProvider = ({ children }) => {
     }, [API_BASE_URL]);
 
     const updateCall = async (callId, isArchived) => {
-        // try {
-        //   await axios.patch(`${API_BASE_URL}/activities/${callId}`, {
-        //     "is_archived": isArchived
-        //   });
-        //   // Update the state locally
-        //   setCalls(prevCalls => 
-        //     prevCalls.map(call => 
-        //       call.id === callId ? { ...call, is_archived: isArchived } : call
-        //     )
-        //   );
-        // } catch (error) {
-        //   console.error('Error updating call:', error);
-        //   setError(error.message || 'Something went wrong');
-        // }
         try {
-            // Simulate network delay
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Mock data update
-            setCalls(prevCalls => {
-                // Update the specific call
-                const updatedCalls = prevCalls.map(call =>
-                    call.id === callId ? { ...call, is_archived: isArchived } : call
-                );
-
-                // Filter out archived calls if isArchived is true
-                const filteredCalls = isArchived
-                    ? updatedCalls.filter(call => !call.is_archived)
-                    : updatedCalls;
-
-                // Print the length of the filtered calls array
-                console.log('Length of calls after update:', filteredCalls.length);
-
-                // Return the filtered calls array
-                return filteredCalls;
-            });
-
+            const response = await axios.patch(`${API_BASE_URL}/activities/${callId}`, {
+                is_archived: isArchived
+              }, {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+          // Update the state locally
+          setCalls(prevCalls => 
+            prevCalls.map(call => 
+              call.id === callId ? { ...call, is_archived: isArchived } : call
+            )
+          );
         } catch (error) {
-            console.error('Error updating call:', error);
-            setError(error.message || 'Something went wrong');
+          console.error('Error updating call:', error);
+          setError(error.message || 'Something went wrong');
         }
+       
 
     };
 
@@ -121,10 +99,23 @@ export const CallProvider = ({ children }) => {
         }
     };
 
-
+    const unarchiveAllCalls = async () => {
+        try {
+          const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+      
+          // Send a request to the API endpoint to unarchive all calls
+          const response = await axios.patch(`${API_BASE_URL}/reset`); // Assuming POST for unarchiving
+      
+          // Update the state locally (assuming successful response)
+          setCalls(prevCalls => prevCalls.map(call => ({ ...call, is_archived: false })));
+        } catch (error) {
+          console.error('Error unarchiving calls:', error);
+          setError(error.message || 'Something went wrong unarchiving calls');
+        }
+      };
 
     return (
-        <CallContext.Provider value={{ calls, loading, error, updateCall, mockUpdateCall }}>
+        <CallContext.Provider value={{ calls, loading, error, updateCall, mockUpdateCall,unarchiveAllCalls }}>
             {children}
         </CallContext.Provider>
     );

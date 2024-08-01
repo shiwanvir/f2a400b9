@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'; 
+import React, { useState, useContext } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -16,7 +16,7 @@ import Badge from '@mui/material/Badge';
 
 
 const CallDetailsModal = ({ open, onClose, callDetails }) => (
-    <Modal open={open} onClose={onClose} aria-labelledby="modal-title" aria-describedby="modal-description">
+  <Modal open={open} onClose={onClose} aria-labelledby="modal-title" aria-describedby="modal-description">
     <Box
       sx={{
         display: 'flex',
@@ -57,10 +57,10 @@ const CallDetailsModal = ({ open, onClose, callDetails }) => (
       </Box>
     </Box>
   </Modal>
-  );
-  
+);
 
-const Call = ({ callId,callerNameOrNumber, time, description,direction, icon, onClick,count, call_type}) => {
+
+const Call = ({ callId, callerNameOrNumber, time, description, direction, icon, onClick, count, call_type, is_archived }) => {
   const [isSwiped, setIsSwiped] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [lastClickTime, setLastClickTime] = useState(0);
@@ -73,14 +73,14 @@ const Call = ({ callId,callerNameOrNumber, time, description,direction, icon, on
     trackMouse: true,
   });
 
-  const handleArchive = (e) => {
+  const handleArchive = (e, is_archived) => {
     // Ensure e is defined and stopPropagation is available
     if (e && typeof e.stopPropagation === 'function') {
       e.stopPropagation();
     }
-    console.log("call ID:", callId); // Log callId
+    console.log("call ID:", is_archived); // Log callId
     if (callId) {
-      updateCall(callId, true);
+      updateCall(callId, !is_archived);
     } else {
       console.error('callId is undefined');
     }
@@ -94,9 +94,9 @@ const Call = ({ callId,callerNameOrNumber, time, description,direction, icon, on
   const getIconByCallType = (callType) => {
     switch (callType) {
       case 'missed':
-        return <PhoneMissedOutlinedIcon  color="warning"/>;
+        return <PhoneMissedOutlinedIcon color="warning" />;
       case 'answered':
-        return <PhoneCallbackOutlinedIcon color="primary"/>;
+        return <PhoneCallbackOutlinedIcon color="primary" />;
       case 'voicemail':
         return <VoicemailOutlinedIcon color="info" />;
       default:
@@ -115,30 +115,32 @@ const Call = ({ callId,callerNameOrNumber, time, description,direction, icon, on
           display: 'flex',
           alignItems: 'center',
         }}
-        // onClick={handleDoubleClick}
+      // onClick={handleDoubleClick}
       >
         <CardContent sx={{ flex: '1 1 auto' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography variant="h6" component="div">
               {callerNameOrNumber}
               {count > 1 && (
-        <Badge
-          badgeContent={count}
-          color="error"
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          overlap="rectangular"
-          style={{ marginLeft: '16px',
-          marginBottom:'3px' }}
-        />
-      )}
+                <Badge
+                  badgeContent={count}
+                  color="error"
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  overlap="rectangular"
+                  style={{
+                    marginLeft: '16px',
+                    marginBottom: '3px'
+                  }}
+                />
+              )}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
             <IconButton>
-            {getIconByCallType(call_type)}
+              {getIconByCallType(call_type)}
             </IconButton>
             <Typography variant="caption" color="text.secondary">
               {time}
@@ -159,6 +161,7 @@ const Call = ({ callId,callerNameOrNumber, time, description,direction, icon, on
             bottom: 0,
             right: 0,
             width: '100px',
+            height: '150px',
             backgroundColor: '#87CEEB', // Red color for delete action
             display: 'flex',
             alignItems: 'center',
@@ -167,16 +170,16 @@ const Call = ({ callId,callerNameOrNumber, time, description,direction, icon, on
             transition: 'background-color 0.3s ease',
           }}
           onClick={(e) => {
-            handleArchive(e);
+            handleArchive(e, is_archived);
           }}
         >
-          <Typography variant="button">Archive</Typography>
+          <Typography variant="button" sx={{ textTransform: 'none' }}>{is_archived ? 'Unarchive' : 'Archive'}</Typography>
         </Box>
       )}
-        <CallDetailsModal 
-        open={detailsOpen} 
-        onClose={() => setDetailsOpen(false)} 
-        callDetails={{ callerNameOrNumber, time, description,direction }} 
+      <CallDetailsModal
+        open={detailsOpen}
+        onClose={() => setDetailsOpen(false)}
+        callDetails={{ callerNameOrNumber, time, description, direction }}
       />
     </Box>
   );

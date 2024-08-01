@@ -9,21 +9,14 @@ import { CallContext } from '../../../contexts/CallContext.jsx';
 const AllCallList = () => {
 const { calls, loading, updateCall } = useContext(CallContext);
 
-    const handleButtonClick1 = () => {
-        console.log('Button 1 clicked!');
+    const handleButtonClickArchiveAll = () => {
+      calls.forEach(call => updateCall(call.id, true));
     };
 
-    const handleCallClick = (callId) => {
-       const nonArchivedCalls = calls.filter(call => !call.is_archived);
-        const call = nonArchivedCalls.find(c => c.id === callId);
-        if (call) {
-          updateCall(callId, !call.is_archived);
-        }
-      };
   const unarchivedCalls = calls.filter(call => !call.is_archived);    
   return (
     <Box>
-    <CustomButton buttonName="Archive all calls" onClick={handleButtonClick1} icon={<ArchiveOutlinedIcon />} />    
+    <CustomButton buttonName="Archive all calls" onClick={handleButtonClickArchiveAll} icon={<ArchiveOutlinedIcon />} />    
     {unarchivedCalls.map(call => (
       <Box key={call.id} mb={1}>
            <Typography variant="h6" align="center" gutterBottom>
@@ -37,9 +30,9 @@ const { calls, loading, updateCall } = useContext(CallContext);
             description={"Tried to call on "+call.via}
             direction={call.direction}
             icon={null}
-            onClick={() => handleCallClick(call.id)}
             callId={call.id}
             call_type={call.call_type}
+            is_archived={call.is_archived}
         />
         </Box>
     ))}
